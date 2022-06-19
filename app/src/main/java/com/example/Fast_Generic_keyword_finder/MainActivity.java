@@ -1,8 +1,8 @@
-package com.example.porn_blocker_aho;
+package com.example.Fast_Generic_keyword_finder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,7 +11,6 @@ import android.os.StrictMode;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -21,29 +20,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import static android.content.ContentValues.TAG;
 import static java.lang.Character.isLetter;
@@ -216,6 +202,14 @@ public class MainActivity extends AppCompatActivity{
 
 
         webView.setWebViewClient(new myWebViewClient());
+
+        Porn_signal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent automanton = new Intent(MainActivity.this, Automanton_building.class);
+                startActivity(automanton);
+            }
+        });
 
 
         go_butt.setOnClickListener(new View.OnClickListener() {

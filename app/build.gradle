@@ -1,12 +1,13 @@
 plugins {
     id 'com.android.application'
+    id 'realm-android'
 }
 
 android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.example.porn_blocker_aho"
+        applicationId "com.example.Fast_Generic_keyword_finder"
         minSdkVersion 28
         targetSdkVersion 28
         versionCode 1

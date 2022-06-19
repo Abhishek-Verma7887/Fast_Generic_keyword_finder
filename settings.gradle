@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "Porn_blocker_aho"
+rootProject.name = "Fast_Generic_keyword_finder"
