@@ -28,6 +28,32 @@ public class RealmHelper {
 
     }
 
+    //DELETE
+    public void delete_keyword(final String ID){
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Keyword_schema K= realm.where(Keyword_schema.class).equalTo("id", ID).findFirst();
+                K.deleteFromRealm();
+            }
+        });
+    }
+
+
+    //UPDATE_STATUS
+    public void update_status(final String ID,final boolean st){
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Keyword_schema K= realm.where(Keyword_schema.class).equalTo("id", ID).findFirst();
+                K.setStatus(st);
+            }
+        });
+    }
+
+
+
+
     //READ
     public ArrayList<Keyword_schema> retrieve()
     {

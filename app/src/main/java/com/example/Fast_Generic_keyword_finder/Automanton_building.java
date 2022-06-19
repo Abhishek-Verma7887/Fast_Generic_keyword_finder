@@ -58,6 +58,15 @@ public class Automanton_building extends AppCompatActivity {
                 version++;
             }
         }
+        @Override
+        public boolean equals(Object obj) {
+            return obj != null && obj instanceof Migration; // obj instance of your Migration class name, here My class is Migration.
+        }
+
+        @Override
+        public int hashCode() {
+            return Migration.class.hashCode();
+        }
     };
 
     @Override
@@ -79,7 +88,7 @@ public class Automanton_building extends AppCompatActivity {
         keywordList=helper.retrieve();
 
         //BIND
-        adapter=new Keyword_RecyclerAdapter(this,keywordList);
+        adapter=new Keyword_RecyclerAdapter(this,keywordList,realm);
         rv.setAdapter(adapter);
 
         RealmResults<Keyword_schema> mykeywordList = realm.where(Keyword_schema.class).findAllAsync();
@@ -88,7 +97,7 @@ public class Automanton_building extends AppCompatActivity {
             @Override
             public void onChange(RealmResults<Keyword_schema> keyword_schemas, OrderedCollectionChangeSet changeSet) {
                 keywordList=helper.retrieve();
-                adapter=new Keyword_RecyclerAdapter(Automanton_building.this,keywordList);
+                adapter=new Keyword_RecyclerAdapter(Automanton_building.this,keywordList,realm);
                 rv.setAdapter(adapter);
             }
         });
@@ -110,7 +119,7 @@ public class Automanton_building extends AppCompatActivity {
                     helper.save(keyword);
                     //REFRESH
                     keywordList=helper.retrieve();
-                    adapter=new Keyword_RecyclerAdapter(Automanton_building.this,keywordList);
+                    adapter=new Keyword_RecyclerAdapter(Automanton_building.this,keywordList,realm);
                     rv.setAdapter(adapter);
                 }else{
                     Toast.makeText(getApplicationContext(), "invalid input", Toast.LENGTH_LONG).show();

@@ -12,6 +12,9 @@ public class Keyword_schema extends RealmObject {
         public String getName() {
             return name;
         }
+    public String getid() {
+        return id;
+    }
 
         public void setName(String name) {
             this.name = name;

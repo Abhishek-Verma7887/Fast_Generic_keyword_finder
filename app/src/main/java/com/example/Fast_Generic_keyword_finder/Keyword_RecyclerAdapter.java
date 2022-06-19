@@ -9,12 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 public class Keyword_RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
     Context c;
-    ArrayList<Keyword_schema> keywordsList; ;
-    public Keyword_RecyclerAdapter(Context c, ArrayList<Keyword_schema> keywordsList){
+    Realm realm_d;
+    ArrayList<Keyword_schema> keywordsList;
+    RealmHelper helper;
+    public Keyword_RecyclerAdapter(Context c, ArrayList<Keyword_schema> keywordsList,Realm realm){
         this.c=c;
         this.keywordsList=keywordsList;
+        this.realm_d=realm;
+        this.helper=new RealmHelper(realm_d);
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,6 +37,27 @@ public class Keyword_RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
         }else{
             holder.cbox.setChecked(false);
         }
+        holder.percent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                helper.delete_keyword(keywordsList.get(position).getid());
+            }
+        });
+
+        holder.cbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.cbox.isChecked()&&chk!=true){
+                    helper.update_status(keywordsList.get(position).getid(),true);
+                }else if(chk==true){
+                    helper.update_status(keywordsList.get(position).getid(),false);
+                }
+            }
+        });
+
+
+
+
     }
     @Override
     public int getItemCount() {
