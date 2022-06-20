@@ -31,7 +31,7 @@ public class Keyword_RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.name_keyword.setText(keywordsList.get(position).getName());
-        holder.percent.setText(keywordsList.get(position).getPercent());
+        holder.percent.setText(keywordsList.get(position).getPercent()+"%");
         boolean chk=keywordsList.get(position).getStatus();
         if(chk){
             holder.cbox.setChecked(true);

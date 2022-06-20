@@ -24,6 +24,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,13 +55,15 @@ public class MainActivity extends AppCompatActivity{
     private TextView text_desc;
     private TextView expected_class;
     public static int SDK_INT = android.os.Build.VERSION.SDK_INT;
-    private String porn_keywords[]={"horny","bbc","orgasm","nude","naked","dildo","threesome","bitch","gangbang","xxx","cumshot","cum","blowjob","bimbo",
+    private String porn_keywords[]={"abhishek","bbc","orgasm","nude","naked","dildo","threesome","bitch","gangbang","xxx","cumshot","cum","blowjob","bimbo",
             "squirt","ebony","tits","busty","whore","slut","cunt","anal", "gay","fuck","lesbian","porn","porno","sex","sexy","boobs","pussy","dick",
             "handjob","fingering","booty","creampie","butt","chick","milf","cougar","cuckold","deepthroat","hentai","doggystyle","milfy","bondage",
             "bbw","escort","erotic","incest","hotmom","orgy","puba","stepmom","stepsis","spanking","sissy","shemale","taboo","virgin","cfnm","cmnf"};
     HashMap<Integer,String> index_2_string=new HashMap<Integer,String>();
     Set<String> found_porn_words = new HashSet<String>();
-
+    Set<Integer> found_porn_words_index=new HashSet<Integer>();
+    Integer Total_keywords=62;
+    Integer total_aggregate_percent=0;
 
     int K = 26;
 
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity{
         int p=-1;
         char pch;
         int green_link=-1;
+        int percent=0;
         int link=-1;
         int[] go=new int[K];
         public vertex(int pp,char ch){
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity{
 
     ArrayList<vertex> tree=new ArrayList<>();
 
-    void add_string(String s){
+    void add_string(String s,Integer percent){
         int v=0;
         for(int i=0;i<s.length();i++){
             int c=s.charAt(i)-'a';
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity{
             }
             v=tree.get(v).next[c];
         }
+        tree.get(v).percent=percent;
         index_2_string.put(v,s);
         tree.get(v).leaf=true;
     }
@@ -152,6 +157,7 @@ public class MainActivity extends AppCompatActivity{
                  //porn_hai=porn_hai+" "+index_2_string.get(v);
                 if(cur_match.length()==(cur_pos-last_space_pos)&&agla){ //LESS strict checking no substring check
                     found_porn_words.add(cur_match);
+                    found_porn_words_index.add(v);
                 }
             }
             print_green_links(tree.get(v).green_link,cur_pos,agla);
@@ -184,7 +190,7 @@ public class MainActivity extends AppCompatActivity{
         vertex top= new vertex(-1,'$');
         tree.add(top);
         for(String str:porn_keywords){
-            add_string(str);
+            add_string(str,0);
         }
         initialise_suffix();
 
@@ -222,6 +228,9 @@ public class MainActivity extends AppCompatActivity{
         button_rebuild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                button_rebuild.setClickable(false);
+                url_butt.setClickable(false);
+                go_butt.setClickable(false);
                 try{
                     switch (view.getId()) {
                         case R.id.button_rebuild:
@@ -232,6 +241,9 @@ public class MainActivity extends AppCompatActivity{
                 }catch (Exception e){
                     Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
+                button_rebuild.setClickable(true);
+                url_butt.setClickable(true);
+                go_butt.setClickable(true);
             }
         });
 
@@ -388,12 +400,26 @@ public class MainActivity extends AppCompatActivity{
                 expected_class.setText("PORN CONTENT FOUND");
             }else{
                 Porn_signal.setImageDrawable(getApplicationContext().getDrawable(R.mipmap.green_button));
-                expected_class.setText("NO PORN CONTENT");
+                expected_class.setText("NO PORN CONTENT 0%");
             }
             for(String s:found_porn_words){
                 porn_hai=porn_hai+" "+s;
-            } found_porn_words.clear();
-            text_desc.setText("Porn_keywords: "+porn_hai);
+            }
+
+            Double Aggreagte_percent=0.0;
+            Double total_percent=0.0;
+            for(Integer v:found_porn_words_index){
+                total_percent+=tree.get(v).percent;
+            }
+            DecimalFormat df = new DecimalFormat("##.###");
+            Aggreagte_percent=(total_percent/(Double)(0.00001+found_porn_words.size()));
+            Double word_match_percent=0.0;
+            word_match_percent= (found_porn_words.size()*100/ new Double(0.000001+Total_keywords));
+            text_desc.setText("Word Match Percent: "+String.valueOf(df.format(word_match_percent))+
+                    "\nWeighted Percent: "+String.valueOf(df.format(Aggreagte_percent))+"\nPorn_keywords: "+porn_hai);
+
+            found_porn_words.clear();
+            found_porn_words_index.clear();
 
             //expected_class.setBackgroundDrawable(getApplicationContext().getDrawable(R.mipmap.green_button));
             if(error_thi){
@@ -434,8 +460,10 @@ public class MainActivity extends AppCompatActivity{
                 vertex top = new vertex(-1, '$');
                 tree.add(top);
                 for (Keyword_schema K : keywordList) {
-                    add_string(K.getName());
+                    add_string(K.getName(), Integer.valueOf(K.getPercent()));
+                    Total_errors=Total_errors+K.getName();
                 }
+                Total_keywords=keywordList.size();
                 initialise_suffix();
             }catch (Exception e){
                 error_thi=true;
@@ -454,7 +482,7 @@ public class MainActivity extends AppCompatActivity{
         protected void onPreExecute() {
             prepro.setVisibility(View.VISIBLE);
             Total_errors="";
-            error_thi=false;
+            error_thi=true;
 
         }
         @Override
