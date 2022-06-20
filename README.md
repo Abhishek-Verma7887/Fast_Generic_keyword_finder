@@ -4,7 +4,7 @@
 - While interacting with in_built browser, user can check for the keywords-set members in text content on the current page in browser which also reflects
 the type of page and for letting the user know if it's compitable with user's requirement.
 
-- User with his own choice add any word in the keyword-set and may select or unselect the keyword or delete the keyword in keyword-set as per his requirement.
+- User with his own choice can add any word in the keyword-set and may select or unselect the keyword or delete the keyword in keyword-set as per his requirement.
 
 - Keyword database is built in NoSQL mongoDB Realm Android Database which is faster than SQLlite etc.
 
