@@ -20,9 +20,9 @@ Rabin-karp(Rolling hash), etc.
 
 |                  CONTENT FOUND                    |                 KEYWORDS-SET                      |                 NO CONTENT FOUND                  |
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
-| <img width="1604" src="./pics/A.jpeg"> | <img width="1604" src="./pics/B.jpeg"> | <img width="1604" src="./pics/C.jpeg"> |
+| <img width="1604" src="./pics/A.jpeg"> | <img width="1494" src="./pics/B.jpeg"> | <img width="1604" src="./pics/C.jpeg"> |
 
 
 |                 CONTENT FOUND                     |                 CONTENT FOUND                     |            SELECT/UNSELECT KEYWORD                |
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|    
-| <img width="1604" src="./pics/D.jpeg"> | <img width="1604" src="./pics/E.jpeg"> | <img width="1604" src="./pics/F.jpeg"> |         
+| <img width="1604" src="./pics/D.jpeg"> | <img width="1604" src="./pics/E.jpeg"> | <img width="1300" src="./pics/F.jpeg"> |         
