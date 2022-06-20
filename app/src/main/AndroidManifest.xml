@@ -20,7 +20,8 @@
 
         <activity
             android:name=".Automanton_building"
-            android:label="@string/title_activity_automanton_building">
+            android:label="@string/title_activity_automanton_building"
+            android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity
             android:name=".MainActivity"

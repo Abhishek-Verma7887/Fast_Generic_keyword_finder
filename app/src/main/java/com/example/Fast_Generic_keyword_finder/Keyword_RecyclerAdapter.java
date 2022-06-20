@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +41,11 @@ public class Keyword_RecyclerAdapter extends RecyclerView.Adapter<MyViewHolder>{
         holder.percent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                helper.delete_keyword(keywordsList.get(position).getid());
+                try {
+                    helper.delete_keyword(keywordsList.get(position).getid(), c);
+                }catch (Exception e){
+                    Toast.makeText(c, e.toString(), Toast.LENGTH_LONG).show();
+                }
             }
         });
 

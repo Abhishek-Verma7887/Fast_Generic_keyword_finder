@@ -31,6 +31,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 import static android.content.ContentValues.TAG;
 import static java.lang.Character.isLetter;
 import static java.lang.Character.isLowerCase;
@@ -38,9 +41,13 @@ import static java.lang.Character.isLowerCase;
 
 
 public class MainActivity extends AppCompatActivity{
+    //Realm
+    Realm realm;
+    ArrayList<Keyword_schema> keywordList;
+    //Realm
     private EditText url_n;
     private ProgressBar prepro;
-    private Button go_butt;
+    private Button go_butt,button_rebuild;
     private Button url_butt;
     private ImageView Porn_signal;
     private WebView webView;
@@ -190,6 +197,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         url_n=(EditText) findViewById(R.id.textInputEditText);
         go_butt=(Button) findViewById(R.id.button);
+        button_rebuild=(Button)findViewById(R.id.button_rebuild);
         text_desc=(TextView)findViewById(R.id.textView3);
         text_desc.setMovementMethod(new ScrollingMovementMethod());
         webView = (WebView) findViewById(R.id.webView);
@@ -200,8 +208,32 @@ public class MainActivity extends AppCompatActivity{
         prepro.setVisibility(View.INVISIBLE);
         Porn_signal=(ImageView)findViewById(R.id.imageView);
 
+        //Realm2
+        //SETUP REEALM
+        Realm.init(this);
+        RealmConfiguration config=new RealmConfiguration.Builder().schemaVersion(1).migration(new Migration()).build();
+        realm=Realm.getInstance(config);
+        RealmHelper helper=new RealmHelper(realm);
+        //Realm2
+
 
         webView.setWebViewClient(new myWebViewClient());
+
+        button_rebuild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    switch (view.getId()) {
+                        case R.id.button_rebuild:
+                            new RebuildTask().execute(10);
+                            break;
+                    }
+
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         Porn_signal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,6 +280,8 @@ public class MainActivity extends AppCompatActivity{
                     webView.getSettings().setLoadsImagesAutomatically(true);
                     webView.getSettings().setJavaScriptEnabled(true);
                 }
+                //rebuilding button set clicability to true
+                button_rebuild.setClickable(true);
                 go_butt.setClickable(true);
                 load_again_webview[0] =true;
 
@@ -259,6 +293,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 try {
                     go_butt.setClickable(false);
+                    button_rebuild.setClickable(false);
+                    //rebuilding button set clicability to false
                     String cur_url = webView.getUrl().toString();
                     String[] arrStr = cur_url.split("//", 0);
                     Total_errors="";
@@ -267,7 +303,9 @@ public class MainActivity extends AppCompatActivity{
                     go_butt.performClick();
                 }catch (Exception ex){
                     text_desc.setText(" First load the webpage correctly then  fetch current url\n"+ex.getMessage().toString());
+                    //rebuilding button set clicability to true
                     go_butt.setClickable(true);
+                    button_rebuild.setClickable(true);
                 }
             }
         });
@@ -380,6 +418,54 @@ public class MainActivity extends AppCompatActivity{
             }
         }
     }
+
+    class RebuildTask extends AsyncTask<Integer, Integer, String> {
+        @Override
+        protected String doInBackground(Integer... params) {
+
+
+            try {
+                //RETRIEVE
+                RealmConfiguration config=new RealmConfiguration.Builder().schemaVersion(1).migration(new Migration()).build();
+                realm=Realm.getInstance(config);
+                RealmHelper helper=new RealmHelper(realm);
+                keywordList=helper.retrieve_only_SET();
+                tree.clear();
+                vertex top = new vertex(-1, '$');
+                tree.add(top);
+                for (Keyword_schema K : keywordList) {
+                    add_string(K.getName());
+                }
+                initialise_suffix();
+            }catch (Exception e){
+                error_thi=true;
+                Total_errors=Total_errors+e.getMessage();
+            }
+
+
+            return "Task Completed.";
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            if(error_thi)Toast.makeText(getApplicationContext(), "in reini"+Total_errors, Toast.LENGTH_LONG).show();
+            prepro.setVisibility(View.INVISIBLE);
+        }
+        @Override
+        protected void onPreExecute() {
+            prepro.setVisibility(View.VISIBLE);
+            Total_errors="";
+            error_thi=false;
+
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            try{
+            }catch (Exception ex){
+                Toast.makeText(getApplicationContext(), "progress error", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
