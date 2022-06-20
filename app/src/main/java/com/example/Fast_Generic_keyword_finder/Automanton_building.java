@@ -79,12 +79,23 @@ public class Automanton_building extends AppCompatActivity {
             public void onClick(View view) {
                 Keyword_schema keyword=new Keyword_schema();
                 String word=name_keyword.getText().toString();
+                String tmp="";
+                int ff=-1;
+                for(int i=word.length()-1;i>=0;i--){
+                    if(word.charAt(i)!=' ') {
+                        ff = i; break;
+                    }
+                }
+                for(int i=0;i<ff+1;i++){
+                    tmp+=word.charAt(i);
+                }
                 String Cent=percent_keyword.getText().toString();
                 if(word.length()!=0&&Cent.length()!=0){
-                    keyword.setName(word);
+                    keyword.setName(tmp);
                     keyword.setPercent(Cent);
                     keyword.setStatus(true);
                     name_keyword.setText("");
+                    percent_keyword.setText("");
                     //SAVE
                     RealmHelper helper=new RealmHelper(realm);
                     helper.save(keyword);

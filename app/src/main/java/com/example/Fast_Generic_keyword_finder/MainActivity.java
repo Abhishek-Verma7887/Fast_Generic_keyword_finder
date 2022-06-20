@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity{
     private TextView text_desc;
     private TextView expected_class;
     public static int SDK_INT = android.os.Build.VERSION.SDK_INT;
-    private String porn_keywords[]={"abhishek","bbc","orgasm","nude","naked","dildo","threesome","bitch","gangbang","xxx","cumshot","cum","blowjob","bimbo",
+    private String porn_keywords[]={"horny","bbc","orgasm","nude","naked","dildo","threesome","bitch","gangbang","xxx","cumshot","cum","blowjob","bimbo",
             "squirt","ebony","tits","busty","whore","slut","cunt","anal", "gay","fuck","lesbian","porn","porno","sex","sexy","boobs","pussy","dick",
             "handjob","fingering","booty","creampie","butt","chick","milf","cougar","cuckold","deepthroat","hentai","doggystyle","milfy","bondage",
             "bbw","escort","erotic","incest","hotmom","orgy","puba","stepmom","stepsis","spanking","sissy","shemale","taboo","virgin","cfnm","cmnf"};
@@ -397,10 +397,10 @@ public class MainActivity extends AppCompatActivity{
             occurence_print(filtered_FULL_page_doc);
             if(!found_porn_words.isEmpty()){
                 Porn_signal.setImageDrawable(getApplicationContext().getDrawable(R.mipmap.red_button_2));
-                expected_class.setText("PORN CONTENT FOUND");
+                expected_class.setText("CONTENT FOUND");
             }else{
                 Porn_signal.setImageDrawable(getApplicationContext().getDrawable(R.mipmap.green_button));
-                expected_class.setText("NO PORN CONTENT 0%");
+                expected_class.setText("NO CONTENT 0%");
             }
             for(String s:found_porn_words){
                 porn_hai=porn_hai+" "+s;
@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity{
             Double word_match_percent=0.0;
             word_match_percent= (found_porn_words.size()*100/ new Double(0.000001+Total_keywords));
             text_desc.setText("Word Match Percent: "+String.valueOf(df.format(word_match_percent))+
-                    "\nWeighted Percent: "+String.valueOf(df.format(Aggreagte_percent))+"\nPorn_keywords: "+porn_hai);
+                    "\nWeighted Percent: "+String.valueOf(df.format(Aggreagte_percent))+"\nKeywords: "+porn_hai);
 
             found_porn_words.clear();
             found_porn_words_index.clear();

@@ -55,7 +55,7 @@
         android:background="@drawable/back"
         android:editable="true"
         android:scrollbars="vertical"
-        android:text="NO PORN CONTENT"
+        android:text="NO CONTENT"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="25dp"
@@ -75,7 +75,7 @@
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Porn Keywords Found: " />
+        android:text="Keywords Found: " />
 
     <Button
         android:id="@+id/button_rebuild"
